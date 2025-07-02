@@ -1,11 +1,8 @@
 using LinearAlgebra
-function MCA_ml_pca(X,l)
+function MCA_ml_pca(X,ell)
     n = size(X,1)
-    xbar = sum(X, dims=2) / n
-    Xt = X .- xbar
-
+    Xt = X .- sum(X, dims=1) / n
     ~, ~, V = svd(Xt)        # 特異値分解
-    Y = X * V[:,1:l]
 
-    return V[:,1:l], Y
+    return (B = V[:,1:ell], Y = X * V[:,1:ell])
 end

@@ -7,10 +7,10 @@ function MCA_imgcomp_svd(img,k)
     Wk = Matrix{Float16}(Vk*diagm(Sk)) # 半精度の行列に変換
     return (Uk=Uk, Wk=Wk)
 end
+
 function MCA_imgcomp_svd_reconstruct(svdk)
     Ak = svdk.Uk * svdk.Wk'
     Ak = min.(1,max.(0,Ak))            # 各要素を[0,1]に揃える
     imgk = colorview(Gray,Ak)          # 近似画像の復元
-
     return imgk
 end

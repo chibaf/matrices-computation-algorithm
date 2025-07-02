@@ -1,8 +1,7 @@
 using LinearAlgebra
 function MCA_qr_cholesky(A)
     F = cholesky(A' * A)
-    R = F.U
-    Q = A / R
+    Q = A / F.U
 
-    return (Q=Q, R=R)
+    return (Q=Q, R=F.U)
 end

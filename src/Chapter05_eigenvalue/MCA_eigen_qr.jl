@@ -6,11 +6,10 @@ function MCA_eigen_qr(A; iter=20, tol=1e-15)
     W = zeros(n,n)
     H = copy(float(A))
     for j = 1:n-2
-        W[j+1:n,j] = MCA_householder_gen(H[j+1:n,j])
+        W[j+1:n,j], r = MCA_householder_gen(H[j+1:n,j])
         H[j+1:n,j+1:n] = MCA_householder_op(W[j+1:n,j],H[j+1:n,j+1:n])
+        H[j+1,j] = r; H[j+2:n,j] = zeros(n-j-1)
         H[:,j+1:n]= MCA_householder_op(W[j+1:n,j],H[:,j+1:n]')'
-        H[j+1,j] = norm(H[j+1:n,j])
-        H[j+2:n,j] = zeros(n-j-1)
     end
 
     # ギブンス回転によるヘッセンベルク行列のQR法
@@ -21,8 +20,9 @@ function MCA_eigen_qr(A; iter=20, tol=1e-15)
         s = H[m,m]                               # レイリー商シフト
         H = H - s * I(n)
         for i = 1:m-1
-            cc[i], ss[i] = MCA_givens_gen(H[i,i],H[i+1,i])
-            H[i:i+1,i:n] = MCA_givens_op(cc[i],ss[i],H[i:i+1,i:n])
+            cc[i], ss[i], r = MCA_givens_gen(H[i,i],H[i+1,i])
+            H[i:i+1,i+1:n] = MCA_givens_op(cc[i],ss[i],H[i:i+1,i+1:n])
+            H[i,i] = r; H[i+1,i] = 0
             G[i:i+1,:] = MCA_givens_op(cc[i],ss[i],G[i:i+1,:])
         end
         for i = 1:m-1

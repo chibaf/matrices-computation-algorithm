@@ -1,11 +1,10 @@
+using LinearAlgebra
 function MCA_lu_pivoting(A)
     n = size(A,1)
-    L = zeros(n,n)
+    L = Matrix{Float64}(I,n,n)
     U = copy(float(A))
-    p = Vector(1:n)
+    p = Array(1:n)
     for j = 1:n-1
-        L[j,j] = 1
-
         # （部分）ピボット選択
         pivot = argmax(abs.(U[j:n,j])) + (j-1)
         p[j], p[pivot] = p[pivot], p[j]
@@ -19,7 +18,6 @@ function MCA_lu_pivoting(A)
             L[i,j] = lij
         end
     end
-    L[n,n] = 1
 
     return (L=L, U=U, p=p)
 end

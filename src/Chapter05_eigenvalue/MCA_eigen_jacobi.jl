@@ -1,11 +1,11 @@
 using LinearAlgebra
 function MCA_eigen_jacobi(A; iter=100,tol=1e-15)
-    function inner_givens_jacobi(Aij)
+    function MCA_inner_givens_jacobi(Aij)
         if abs(Aij[1,2]) < tol
-            c = 1; s = 0; 
+            c = 1; s = 0 
             a = Aij[1,1]; b = Aij[1,2]; d = Aij[2,2]
         elseif Aij[1,1] == Aij[2,2]
-            c = s = sqrt(2)/2; 
+            c = s = sqrt(2)/2
             a = Aij[1,1]-Aij[1,2]; b = 0; d = Aij[1,1]+Aij[1,2]
         else
             tau = (Aij[2,2] - Aij[1,1]) / (2*Aij[1,2])
@@ -25,7 +25,7 @@ function MCA_eigen_jacobi(A; iter=100,tol=1e-15)
         for j = 1:n
             for i = 1:j-1
                 ij =[i,j]
-                c, s, Bij = inner_givens_jacobi(D[ij,ij])
+                c, s, Bij = MCA_inner_givens_jacobi(D[ij,ij])
                 D[ij,:] = MCA_givens_op(c,s,D[ij,:])
                 X[ij,:] = MCA_givens_op(c,s,X[ij,:])
                 D[:,ij] = D[ij,:]'
@@ -38,7 +38,7 @@ function MCA_eigen_jacobi(A; iter=100,tol=1e-15)
             break
         end
     end
-    X = X' ./ sqrt.(sum(X'.^2, dims=1))               # 固有ベクトルの正規化
+    X = X'; X = X ./ sqrt.(sum(X.^2, dims=1))         # 固有ベクトルの正規化
     
     return (D = diag(D), X = X)
 end

@@ -5,7 +5,7 @@ function MCA_householder_gen(u)
         w = w / norm(w)
     end
     
-    return w
+    return w, e[1]
 end
 
 function MCA_householder_op(w,x)

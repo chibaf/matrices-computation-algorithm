@@ -1,5 +1,5 @@
 using LinearAlgebra, Clustering
-function MCA_ml_spectral_clustering(X,k; l=1,sigma=0.1)
+function MCA_ml_spectral_clustering(X,k; ell=1,sigma=0.1)
     n, m = size(X)
 
     g = vec(sum(X.^2, dims=2))
@@ -11,7 +11,7 @@ function MCA_ml_spectral_clustering(X,k; l=1,sigma=0.1)
     L = D - W
     
     ~, U = eigen(L,D)                  # 一般化固有値問題の求解
-    y = kmeans(U[:,2:l+1]',k)          # データ表現 U のクラスタリング
+    y = kmeans(U[:,2:ell+1]',k)        # データ表現 U のクラスタリング
 
     return y.assignments
 end

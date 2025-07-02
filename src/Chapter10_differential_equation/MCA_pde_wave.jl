@@ -10,7 +10,7 @@ function MCA_pde_wave(L,c,u,v,h,tmax)
     F = lu(I(N) - h * Ah)         # 反復の外でLU分解を実施
     for k = 1:kmax
         t = k*h
-        v = F \ (Ah * u + v)      # LU分解を利用して求解
+        v = F \ (Ah * u + v)      # 線形方程式の求解（LU分解を繰り返し利用）
         u = u + h * v
         uvec[k,:] = u
         vvec[k,:] = v

@@ -1,5 +1,5 @@
 using LinearAlgebra
-function MCA_qr_givens(A; Type="thin")
+function MCA_qr_givens(A; Type="implicit")
     m, n = size(A)
     C = zeros(m,n); S = zeros(m,n)
     R = copy(float(A))
@@ -27,7 +27,7 @@ function MCA_qr_givens(A; Type="thin")
             end
         end
     elseif Type == "implicit"     # Qを陽に構築しない
-        Q = (C, S)
+        Q = (C=C, S=S)
         R = R[1:n,:]
     end
     

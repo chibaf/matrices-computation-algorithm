@@ -9,7 +9,7 @@ function MCA_lsq_cimminonr(A,b;
         d = omega * diagm(Dinv[1,:]) * ATr
         x = x + d
         r = r - A * d
-        ATr = A' * r;
+        ATr = A' * r
 
         if norm(ATr) / bnorm < tol     # 収束判定
             break

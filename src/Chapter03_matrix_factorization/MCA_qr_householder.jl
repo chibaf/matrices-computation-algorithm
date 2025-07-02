@@ -1,12 +1,12 @@
 using LinearAlgebra
-function MCA_qr_householder(A; Type="thin")   
+function MCA_qr_householder(A; Type="implicit")   
     m, n = size(A)
     W = zeros(m,n)
     R = copy(float(A))
     for j = 1:n
-        W[j:m,j] = MCA_householder_gen(R[j:m,j])
+        W[j:m,j], r = MCA_householder_gen(R[j:m,j])
         R[j:m,j+1:n] = MCA_householder_op(W[j:m,j],R[j:m,j+1:n])
-        R[j,j] = norm(R[j:m,j]); R[j+1:m,j] = zeros(m-j)
+        R[j,j] = r; R[j+1:m,j] = zeros(m-j)
     end
 
     if Type == "thin"             # thin QR分解
